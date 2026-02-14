@@ -1,0 +1,276 @@
+{
+  "name": "client onboarding",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Client Onboarding",
+        "formDescription": "Share with us what services do you need",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First Name",
+              "placeholder": "batoul"
+            },
+            {
+              "fieldLabel": "Last Name",
+              "placeholder": "abedelrahman"
+            },
+            {
+              "fieldLabel": "Phone Number",
+              "placeholder": "76235721"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "batoulabedelrahman5@gmail.com"
+            },
+            {
+              "fieldLabel": "What services do u need?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "sales"
+                  },
+                  {
+                    "option": "general"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "I agree on receiving emails from Upscale Flow AI ",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "I agree"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1447b8db-5340-4395-a324-2a78a832c72e",
+      "name": "On form submission",
+      "webhookId": "1a433473-1ff1-4ef8-b231-d1eb92ca8e30"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c7953d71-3b19-4220-b4ee-b4592af2b1a7",
+              "leftValue": "={{ $json['What services do u need?'] }}",
+              "rightValue": "sales",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "48a7abdd-5ae3-44ca-9728-01202790bf72",
+              "leftValue": "={{ $json['I agree on receiving emails from Upscale Flow AI '] }}",
+              "rightValue": "I agree",
+              "operator": {
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4ed12816-ec71-4850-bd7d-ce1a4a76b0b4",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "VIHvqHDn1rNG5gqd",
+          "mode": "list",
+          "cachedResultName": "Client Onboarding",
+          "cachedResultUrl": "/projects/77hHuc44yA5LGnoo/datatables/VIHvqHDn1rNG5gqd"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "firstname": "={{ $json['First Name'] }}",
+            "Lastname": "={{ $json['Last Name'] }}",
+            "email": "={{ $json.Email }}",
+            "phone_number": "={{ $json['Phone Number'] }}",
+            "services": "={{ $json['What services do u need?'] }}",
+            "agreement": "={{ $json['I agree on receiving emails from Upscale Flow AI '][0] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "firstname",
+              "displayName": "firstname",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Lastname",
+              "displayName": "Lastname",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "phone_number",
+              "displayName": "phone_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "services",
+              "displayName": "services",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "agreement",
+              "displayName": "agreement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        -80
+      ],
+      "id": "792e57e8-d26d-4e54-acd0-45ae4771d517",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "sendTo": "batoulabedelrahman5@gmail.com",
+        "subject": "hello",
+        "message": "hi batoul",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        96
+      ],
+      "id": "60267ba1-86b6-4b6d-aed4-137a7e420bf2",
+      "name": "Send a message",
+      "webhookId": "1f0a8545-bc59-4e5f-980b-70d033aa3ce9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9nTcm3EfdEfWJ8Xy",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "468482c6-6fc1-4590-bd0c-c72caddfcecd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "788588a845777cd319fa9655e4e1b96573b8e9b75b00d24b99a8c8193600abe5"
+  },
+  "id": "7Meh1e6tozCM0lmTQSR3E",
+  "tags": []
+}
